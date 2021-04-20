@@ -14,6 +14,6 @@ To start the application
 
 > cd client\
 > npm install\
-> npm start\
+> npm start
 
 Access development server at: http://localhost:4200

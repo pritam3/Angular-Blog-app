@@ -35,10 +35,10 @@ app.use(express.static(__dirname+ '/client/src/'));
 app.use('/authentication', authentication);
 app.use('/blog', blog);
 
-app.get('*', (req, res)     => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+ '/client/src/index.html'));
 });
   
-app.listen(8080, ()=>{
+app.listen(8080, ()=> {
     console.log("Server is running");
 });

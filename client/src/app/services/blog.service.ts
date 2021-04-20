@@ -41,6 +41,10 @@ getSingleBlog(id){
   this.createAuthenticationHeader();
   return this.http.get('http://localhost:8080/blog/editBlog/'+ id, this.options).pipe(map(res => res.json()));
 }
+getReadmore(id){
+  this.createAuthenticationHeader();
+  return this.http.get('http://localhost:8080/blog/readmore/'+ id, this.options).pipe(map(res => res.json()));
+}
 editBlogSubmit(blog){
   this.createAuthenticationHeader();
   return this.http.put('http://localhost:8080/blog/updateblog', blog, this.options).pipe(map(res => res.json()));

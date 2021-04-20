@@ -5,9 +5,6 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { AuthService } from './../../services/auth.service';
 import { BlogService } from './../../services/blog.service';
 
-
-
-
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -27,18 +24,18 @@ export class BlogComponent implements OnInit {
 
 
   constructor(
-     private formBuilder : FormBuilder,
+    private formBuilder : FormBuilder,
     private authService: AuthService,
-    private blogService: BlogService
-    
-    ) {
-    this.creatNewBLogForm(); //to create new blog
-    this.createNewCommentForm(); // to create new comment 
+    private blogService: BlogService) 
+    {
+      this.creatNewBLogForm(); //to create new blog
+      this.createNewCommentForm(); // to create new comment 
    }
   
   creatNewBLogForm(){
    this.form= this.formBuilder.group({
      title:  ['', Validators.required],
+     category: ['', Validators.required],
      body: ['', Validators.required],
    })
   }
@@ -71,6 +68,7 @@ cancelComment(id)
   onBlogSubmit(){
       var blog = {
       title: this.form.get('title').value, // Title field
+      category: this.form.get('category').value, //Category field
       body: this.form.get('body').value, // Body field
       createdBy: this.username // CreatedBy field
                   }
@@ -104,7 +102,6 @@ cancelComment(id)
     this.blogService.likeBlog(id).subscribe(data=>{
       this.getAllBlogs();
     });
-
   }
 
   dislikeBlog(id){
@@ -128,8 +125,5 @@ cancelComment(id)
       this.username= data.user.username;
     });
     this.getAllBlogs();
-
-    
   }
-
 }

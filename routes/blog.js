@@ -10,27 +10,33 @@ module.exports = (router) =>
         res.json({success:false, message: "Please provide blog title"});
       }
       else {
-        if(!req.body.body && req.body.body===""){
-            res.json({success:false, message: "Please provide blog body"});
+        if(!req.body.category && req.body.category===""){
+            res.json({success:false, message: "Please provide blog category"});
         }
-        else {
-            if(!req.body.createdBy && req.body.createdBy===""){
-                res.json({success:false, message: "Please provied blog creator"});
+        else{
+            if(!req.body.body && req.body.body===""){
+                res.json({success:false, message: "Please provide blog body"});
             }
-            else{
-                const blog = new Blog({
-                title: req.body.title,
-                body: req.body.body,
-                createdBy: req.body.createdBy });
-                
-            blog.save((err)=> {
-                if(err){
-                    res.json({success:false, message: err.errmsg});
-                }                                                                                                    // if(err.code === 11000 ){ //     res.json({ success: true, message:"Blog saved!!"});  //  } else{ } 
-                else{
-                    res.json({success:true, message:" Blog saved!!"});
+            else {
+                if(!req.body.createdBy && req.body.createdBy===""){
+                    res.json({success:false, message: "Please provied blog creator"});
                 }
-                });
+                else{
+                    const blog = new Blog({
+                    title: req.body.title,
+                    category: req.body.category,
+                    body: req.body.body,
+                    createdBy: req.body.createdBy });
+                    
+                blog.save((err)=> {
+                    if(err){
+                        res.json({success:false, message: err.errmsg});
+                    }                                                                                                    // if(err.code === 11000 ){ //     res.json({ success: true, message:"Blog saved!!"});  //  } else{ } 
+                    else{
+                        res.json({success:true, message:" Blog saved!!"});
+                    }
+                    });
+                }
             }
         }
     }
@@ -119,7 +125,8 @@ module.exports = (router) =>
                                     }
                                     else{
                                         // perform the update
-                                        blog.title =req.body.title;
+                                        blog.title = req.body.title;
+                                        blog.category = req.body.category;
                                         blog.body = req.body.body;
                                         blog.save((err)=>{
                                             if(err){
@@ -370,5 +377,40 @@ module.exports = (router) =>
             }
         }
     });
+    
+    router.get('/readmore/:id',(req, res)=> {
+        if(!req.params.id){
+            res.json({ success:false, message: 'No blog id was provided' });
+        } 
+        else{
+            Blog.findOne({ _id: req.params.id }, (err, blog)=> {
+                if(err){
+                    res.json({ success:false, message: 'Not valid blog id' });
+                } 
+                else{
+                    if(!blog){
+                        res.json({ success:false, message:'Blog not found' });
+                    } 
+                    else{
+                        User.findOne({ _id : req.decoded.userId}, (err, user)=>{
+                            if(err){
+                                res.json({ success:false, message: err });
+                            } 
+                            else{
+                                if(!user){
+                                    res.json({ success:false, message:'Unable to authenticate user' });
+                                } 
+                                else{
+                                    res.json({ success:true, blog: blog });                                    
+                                }
+                            }
+                        });
+                    }                    
+                }
+            });
+        }
+    });
+    
     return router;
+
 }

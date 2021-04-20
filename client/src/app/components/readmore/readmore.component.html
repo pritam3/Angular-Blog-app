@@ -1,0 +1,12 @@
+<hr>
+
+<div class="container">
+  <button type="button" name="button"  class="btn btn-warning"(click) = "goBack()"> Go back</button>
+  <div class="shadow rounded">
+    <h2 class="">{{blog.title | uppercase }}</h2>
+    <pre class="text-muted">Category: #{{blog.category}}</pre>
+    <h5>BY <u class="text-primary">{{blog.createdBy | uppercase }}</u> | <span class="text-muted">{{ blog.createdAt | date:'medium' }}</span></h5>
+  </div> 
+  <hr>  
+    <p class="description">{{blog.body}}</p>
+</div>

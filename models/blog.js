@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
  const BlogSchema = new Schema({
    title: {type: String, required: true},
+   category: {type: String, required: true},
    body: {type: String, required: true},
    createdBy:{type: String},
    createdAt:{ type:Date, default:Date.now() },

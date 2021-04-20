@@ -2,7 +2,7 @@
 
 - NodeJS
 - MongoDB
-- @angular/cli\
+- @angular/cli
 
 To start the application\
 --go to root directory

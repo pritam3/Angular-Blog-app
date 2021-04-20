@@ -4,7 +4,7 @@
 - MongoDB
 - @angular/cli\
 
-To start the application
+To start the application\
 --go to root directory
 
 > npm install\

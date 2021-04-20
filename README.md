@@ -1,3 +1,9 @@
+## Requirements
+
+- NodeJS
+- MongoDB
+- @angular/cli\
+
 To start the application
 --go to root directory
 
@@ -8,5 +14,7 @@ To start the application
 
 > cd client\
 > npm install\
-> npm run build\
-> npm start
+
+> npm start\
+
+Access development server at: http://localhost:4200

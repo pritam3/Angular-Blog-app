@@ -31,12 +31,12 @@ app.use(cors({
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(__dirname+ '/client/src/'));
+app.use(express.static(__dirname+ '/client/dist'));
 app.use('/authentication', authentication);
 app.use('/blog', blog);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+ '/client/src/index.html'));
+    res.sendFile(path.join(__dirname+ '/client/dist/client/index.html'));
 });
   
 app.listen(8080, ()=> {

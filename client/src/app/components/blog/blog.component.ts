@@ -1,7 +1,5 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
-
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './../../services/auth.service';
 import { BlogService } from './../../services/blog.service';
 
@@ -67,10 +65,10 @@ cancelComment(id)
   //function to submit a new blog post
   onBlogSubmit(){
       var blog = {
-      title: this.form.get('title').value, // Title field
-      category: this.form.get('category').value, //Category field
-      body: this.form.get('body').value, // Body field
-      createdBy: this.username // CreatedBy field
+      title: this.form.get('title').value,
+      category: this.form.get('category').value, 
+      body: this.form.get('body').value, 
+      createdBy: this.username 
                   }
  this.blogService.newBlog(blog).subscribe(data => {
       if(!data.success){

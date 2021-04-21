@@ -9,6 +9,7 @@ import { Router } from '@angular/router'
 })
 export class NavbarComponent implements OnInit {
 
+  username;
   constructor(private authService: AuthService,
   private router : Router) { }
   onLogout(){    
@@ -17,6 +18,8 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-       
+    this.authService.getprofile().subscribe(data=>{
+      this.username= data.user.username;
+    });
   }
 }

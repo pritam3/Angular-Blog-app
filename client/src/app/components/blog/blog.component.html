@@ -1,21 +1,19 @@
 <hr>
+  <div [ngClass]= "messageClass" *ngIf= "message && newPost" >
+    {{ message }}
+  </div>
 
-<div [ngClass]= "messageClass" *ngIf= "message && newPost" >
-  {{ message }}
-</div>
-
-<!-- new post button -->
+<!-- New Blog button -->
 <button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)= "newBlogForm()"> Create Post </button>
 <hr>
 
-<!-- new blog form starts-->
+<!-- New blog form starts-->
 <form [formGroup] ="form" name="blogForm" (submit)= "onBlogSubmit()" *ngIf="newPost" >
 <div class="form-group">
-<!-- title feild -->
   <label for= "title"> Title </label>
-
   <div [ngClass]= "{'has-success': form.controls.title.valid, 'has-error': form.controls.title.errors && form.controls.title.dirty} ">
     <input type="text" name="title" class="form-control" placeholder="*Post title" formControlName="title" />
+    <!-- Validation field -->
     <p *ngIf ="form.controls.title.dirty && form.controls.title.errors?.required"> This  field is required.</p>
   </div>
 </div>
@@ -48,38 +46,39 @@
      <button [disabled]="!form.valid" type="submit" name="button" class="btn btn-success"> Submit</button>
 </form>
 
-<!-- new blog form ends -->
-
-
 <!-- blog panel start -->
 <div *ngIf="!newPost">
-    <!-- panel header start-->
-  <div class="panel panel-info" *ngFor="let blog of blogPost">
+  <!-- panel header start-->
+  <div class="panel panel-info" *ngFor="let blog of blogPost; let i = index">
     <div class="panel-heading">
       <h3 class="panel-title">{{ blog.title | uppercase}}</h3>
     </div>
-    <!-- panel header end -->
 
     <!-- panel footer start -->
     <div class= "panel-footer">
         <strong>By: </strong>{{ blog.createdBy }}
         
         <div class="text-muted mb-2">📅{{ blog.createdAt | date: 'MMM dd, yyyy'}}</div>
-
-      <div *ngIf="username === blog.createdBy">
-        <span class="glyphicon glyphicon-thumbs-up"></span>{{ blog.likes }}&nbsp;
-        <span class="glyphicon glyphicon-thumbs-down"></span> {{ blog.dislikes }}
+        <div *ngIf="username === blog.createdBy">
+        <div style="font-size: medium;"> 
+          <span class="glyphicon glyphicon-thumbs-up"></span>:{{ blog.likes }}&nbsp;
+          <span class="glyphicon glyphicon-thumbs-down"></span>:{{ blog.dislikes }}
+        </div>
       </div>
-
+      <br>
+      
       <a [routerLink]="['/readmore/', blog._id]">
-        <button type="button" name="button" class="btn btn-primary ">Read More</button></a> &nbsp;
+        <button type="button" name="button" class="btn btn-primary ">Read More</button></a> 
+        &nbsp;
+
       <a [routerLink]="['/edit-blog/', blog._id]" *ngIf="username === blog.createdBy">
         <button type="button" name="button" class="btn btn-info ">✎Edit</button></a> 
-      &nbsp;  
+        &nbsp;  
+      
       <a [routerLink]="['/delete-blog/', blog._id]" *ngIf="username === blog.createdBy">
         <button type="button" name="button" class="btn btn-danger ">✂Delete</button></a>        
       
-      <!-- likes dropdown -->
+        <!-- likes dropdown -->
       <div class= "dropdown">
         <button type="button" name= "button"  [disabled]="blog.likedBy.indexOf(username) > -1"  class="" (click)="likeBlog(blog._id)" *ngIf="username !== blog.createdBy">
           <span class="glyphicon glyphicon-thumbs-up">&nbsp;</span> {{ blog.likes }}
@@ -89,46 +88,46 @@
         </div>
       </div>
       &nbsp;
-<!-- dislikes dropdown -->
-  <div class= "dropdown">
-    <button type="button" name= "button" [disabled]="blog.dislikedBy.indexOf(username) > -1" class="" (click)="dislikeBlog(blog._id)"  *ngIf="username !== blog.createdBy" >
-      <span class="glyphicon glyphicon-thumbs-down">&nbsp;</span> {{ blog.dislikes }}
-    </button>
-    <div class="dropdown-content">
-      <a href="#" *ngFor="let disliker of blog.dislikedBy">{{ disliker }}</a>    
-    </div>
+      <!-- dislikes dropdown -->
+      <div class= "dropdown">
+        <button type="button" name= "button" [disabled]="blog.dislikedBy.indexOf(username) > -1" class="" (click)="dislikeBlog(blog._id)"  *ngIf="username !== blog.createdBy" >
+          <span class="glyphicon glyphicon-thumbs-down">&nbsp;</span> {{ blog.dislikes }}
+        </button>
+        <div class="dropdown-content">
+          <a href="#" *ngFor="let disliker of blog.dislikedBy">{{ disliker }}</a>    
+        </div>
+      </div>
+      &nbsp;
+    <div class="btn" data-toggle="collapse" [attr.data-target]="'#' + i"><span class="glyphicon glyphicon-comment"> </span> Show Comments</div>
   </div>
-  <div class="btn" data-toggle="collapse" data-target="#demo">Show Comments</div>
-</div>
-   <!-- footer end -->
 
    <!-- comment box -->
-<ul id="demo" class="list-group collapse">
-  <li class="list-group-item ">
-    <button type="button" name="button" class="btn btn-sm btn-success" 
-     (click)="draftComment(blog._id)">Comment</button>
-     <br />
-     <div *ngIf= "newComment.indexOf(blog._id) > -1">
-      <br>
-      <form [formGroup]= "commentform" >
-            <textarea name="comment" rows="10" cols="15" class="form-control"   
-            formControlName="comment"></textarea>
+    <ul [attr.id]="i" class="list-group collapse">
+      <li class="list-group-item ">
+        <button type="button" name="button" class="btn btn-sm btn-success" 
+        (click)="draftComment(blog._id)">Comment</button>
+        <br />
+        <div *ngIf= "newComment.indexOf(blog._id) > -1">
+          <br>
+          <form [formGroup]= "commentform" >
+                <textarea name="comment" rows="10" cols="15" class="form-control"   
+                formControlName="comment"></textarea>
 
-            <p *ngIf= "commentform.controls.comment.errors?.required && 
-            commentform.controls.comment.dirty">This field is required</p>
-            <br>
-            <button  type= "submit" name="button" 
-            class="btn btn-sm btn-warning" (click)= "postComment(blog._id)"> Submit</button>&nbsp;
+                <p *ngIf= "commentform.controls.comment.errors?.required && 
+                commentform.controls.comment.dirty">This field is required</p>
+                <br>
+                <button  type= "submit" name="button" 
+                class="btn btn-sm btn-warning" (click)= "postComment(blog._id)"> Submit</button>&nbsp;
 
-            <button name="button" (click)= "cancelComment(blog._id)"class="btn btn-sm btn-danger">Cancel</button>
-       </form>
-   </div>
-</li>
-  <li *ngFor="let comment of blog.comments" class="list-group-item">
-      <b> {{ comment.commentby }}</b> :   {{ comment.comment }}
-  </li>
-</ul>
-</div>
+                <button name="button" (click)= "cancelComment(blog._id)"class="btn btn-sm btn-danger">Cancel</button>
+          </form>
+      </div>
+    </li>
+      <li *ngFor="let comment of blog.comments" class="list-group-item">
+          <b> {{ comment.commentby }}</b> :   {{ comment.comment }}
+      </li>
+    </ul>
+  </div>
 
 <!-- Comment box  -->
 
